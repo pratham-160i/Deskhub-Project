@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ticket · Deskhub</title>
+    <link rel="stylesheet" href="/styles/app.css" />
+  </head>
+  <body data-page="ticket-detail">
+    <header class="app-header">
+      <div class="app-header__inner">
+        <h1 class="app-title">Ticket</h1>
+        <nav class="app-nav">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="tickets.html">Tickets</a>
+          <button type="button" class="btn btn--ghost" data-theme-toggle>Dark</button>
+          <button type="button" class="btn btn--ghost" id="btn-logout">Log out</button>
+        </nav>
+      </div>
+    </header>
+    <main class="shell" id="ticket-detail-root">
+      <p><button type="button" class="btn btn--ghost" id="btn-back">← Back to list</button></p>
+
+      <article class="card stack ticket-card">
+        <header>
+          <h2 id="ticket-title" class="ticket-title"></h2>
+          <p class="ticket-sub">
+            <span id="ticket-customer"></span>
+            · Created <span id="ticket-created"></span>
+          </p>
+        </header>
+        <section>
+          <h3 class="h3">Description</h3>
+          <p id="ticket-description" class="ticket-desc"></p>
+        </section>
+        <section class="grid-3">
+          <label class="field">
+            <span>Status</span>
+            <select id="field-status">
+              <option value="open">open</option>
+              <option value="in-progress">in-progress</option>
+              <option value="resolved">resolved</option>
+              <option value="closed">closed</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Priority</span>
+            <select id="field-priority">
+              <option value="low">low</option>
+              <option value="medium">medium</option>
+              <option value="high">high</option>
+              <option value="urgent">urgent</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Assignee</span>
+            <select id="field-assignee"></select>
+          </label>
+        </section>
+        <div class="actions">
+          <button type="button" class="btn btn--danger" id="btn-delete-ticket">Delete ticket</button>
+        </div>
+      </article>
+
+      <section class="card stack" aria-labelledby="comments-heading">
+        <h2 id="comments-heading" class="h2">Comments</h2>
+        <p id="comments-empty" class="state state--empty" hidden>No comments yet.</p>
+        <ul id="comments-list" class="comments-list"></ul>
+        <form id="comment-form" class="stack">
+          <label class="field">
+            <span>Add a comment</span>
+            <textarea id="comment-body" rows="3" maxlength="4000" placeholder="Write a comment…"></textarea>
+          </label>
+          <button type="submit" class="btn btn--primary">Post comment</button>
+        </form>
+      </section>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

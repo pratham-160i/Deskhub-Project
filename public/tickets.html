@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tickets · Deskhub</title>
+    <link rel="stylesheet" href="/styles/app.css" />
+  </head>
+  <body data-page="tickets-list">
+    <header class="app-header">
+      <div class="app-header__inner">
+        <h1 class="app-title">Tickets</h1>
+        <nav class="app-nav">
+          <a href="dashboard.html">Dashboard</a>
+          <a href="tickets.html" aria-current="page">Tickets</a>
+          <button type="button" class="btn btn--ghost" data-theme-toggle>Dark</button>
+          <button type="button" class="btn btn--ghost" id="btn-logout">Log out</button>
+        </nav>
+      </div>
+    </header>
+    <main class="shell">
+      <section class="filters card" aria-label="Search and filters">
+        <div class="filters__row">
+          <label class="field field--grow">
+            <span>Search</span>
+            <input id="filter-search" type="search" placeholder="Title, customer, description…" autocomplete="off" />
+          </label>
+        </div>
+        <div class="filters__row filters__row--wrap">
+          <label class="field">
+            <span>Status</span>
+            <select id="filter-status">
+              <option value="">All</option>
+              <option value="open">open</option>
+              <option value="in-progress">in-progress</option>
+              <option value="resolved">resolved</option>
+              <option value="closed">closed</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Priority</span>
+            <select id="filter-priority">
+              <option value="">All</option>
+              <option value="low">low</option>
+              <option value="medium">medium</option>
+              <option value="high">high</option>
+              <option value="urgent">urgent</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Assignee</span>
+            <select id="filter-assignee"><option value="">All assignees</option></select>
+          </label>
+          <label class="field">
+            <span>Sort</span>
+            <select id="filter-sort">
+              <option value="oldest">Oldest first</option>
+              <option value="newest">Newest first</option>
+              <option value="priority">Priority</option>
+              <option value="status">Status</option>
+            </select>
+          </label>
+        </div>
+        <div class="filters__actions">
+          <button type="button" class="btn btn--primary" id="btn-new-ticket">New ticket</button>
+          <button type="button" class="btn btn--ghost" id="btn-export-csv">Export CSV</button>
+        </div>
+      </section>
+
+      <div id="tickets-loading" class="state state--loading" hidden>
+        <div class="spinner" aria-hidden="true"></div>
+        <p>Loading tickets…</p>
+      </div>
+
+      <div id="tickets-error" class="state state--error" hidden>
+        <p class="tickets-error__text">Something went wrong.</p>
+        <button type="button" class="btn btn--primary" id="tickets-retry">Retry</button>
+      </div>
+
+      <div id="tickets-empty" class="state state--empty" hidden>
+        <p>No tickets found.</p>
+      </div>
+
+      <div id="tickets-table-wrap" class="table-wrap card" hidden>
+        <table id="tickets-table" class="data-table">
+          <caption class="visually-hidden">
+            Support tickets matching your filters
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Title</th>
+              <th scope="col">Customer</th>
+              <th scope="col">Priority</th>
+              <th scope="col">Status</th>
+              <th scope="col">Assignee</th>
+              <th scope="col">Created</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <footer id="tickets-pagination" class="pagination card">
+        <button type="button" class="btn btn--ghost" id="page-prev">Prev</button>
+        <div id="page-numbers" class="page-numbers" aria-label="Pages"></div>
+        <button type="button" class="btn btn--ghost" id="page-next">Next</button>
+        <p id="tickets-page-info" class="page-info"></p>
+      </footer>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

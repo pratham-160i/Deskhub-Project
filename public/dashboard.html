@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard · Deskhub</title>
+    <link rel="stylesheet" href="/styles/app.css" />
+  </head>
+  <body data-page="dashboard">
+    <header class="app-header">
+      <div class="app-header__inner">
+        <h1 class="app-title">Dashboard</h1>
+        <nav class="app-nav">
+          <a href="dashboard.html" aria-current="page">Dashboard</a>
+          <a href="tickets.html">Tickets</a>
+          <button type="button" class="btn btn--ghost" data-theme-toggle>Dark</button>
+          <button type="button" class="btn btn--ghost" id="btn-logout">Log out</button>
+        </nav>
+      </div>
+    </header>
+    <main class="shell">
+      <section class="stats" aria-label="Ticket stats">
+        <article class="stat card">
+          <h2>Total</h2>
+          <p id="stat-total" class="stat__value">—</p>
+        </article>
+        <article class="stat card">
+          <h2>Open</h2>
+          <p id="stat-open" class="stat__value">—</p>
+        </article>
+        <article class="stat card">
+          <h2>In progress</h2>
+          <p id="stat-inprogress" class="stat__value">—</p>
+        </article>
+        <article class="stat card">
+          <h2>Resolved</h2>
+          <p id="stat-resolved" class="stat__value">—</p>
+        </article>
+      </section>
+
+      <section class="card stack">
+        <h2 class="h2">Recent tickets</h2>
+        <p id="recent-empty" class="state state--empty" hidden>No recent tickets.</p>
+        <div id="recent-tickets" class="recent-list"></div>
+      </section>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
