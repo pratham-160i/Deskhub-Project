@@ -13,11 +13,15 @@ Then open **http://localhost:5173/public/login.html** (or **http://localhost:517
 
 ### GitHub Pages (`*.github.io/RepoName/…`)
 
-Static assets use **relative URLs** (`styles/app.css`, `../src/main.js`) and API calls use a **`/RepoName` prefix** when the app is under `/RepoName/public/…`, so CSS and scripts load correctly on [GitHub Pages](https://pages.github.com/).
+The live site uses **relative asset URLs**, **`siteBase()`** so `/RepoName` is prefixed correctly even when the path does not contain `/public/`, and **`.nojekyll`** so GitHub does not run Jekyll on your files.
 
-**Important:** GitHub Pages only hosts **static files**; the Express API does **not** run there. On **`*.github.io`** the app uses **`db.json`** from the repo plus **browser `localStorage`** so sign-in, tickets, filters, comments, and CRUD work in the browser (data persists until you clear site data).
+**Data on Pages:** `db.json` is copied to **`public/db.json`** (`npm run sync-db`, also runs automatically before `npm run build`) and loaded in the browser together with **`localStorage`** so the full UI works without a server.
 
-To use the **Node API** instead, run **`npm run dev`** locally (API on port 3001) or deploy `server.mjs` to a host and point the client at that URL (future enhancement).
+On **`*.github.io`**, the app runs in **static mode** (see `src/api/staticMode.js` + `clientDb.js`). Sign-in, tickets, dashboard, comments, and CRUD all work in the browser until you clear site data.
+
+To use the **Node API** instead, run **`npm run dev`** locally (API on port 3001) or deploy `server.mjs` elsewhere and point the client at that URL (future enhancement).
+
+After changing **`db.json`**, run **`npm run sync-db`** (or `npm run build`) so **`public/db.json`** stays in sync for GitHub Pages.
 
 - **API:** http://localhost:3001 (started alongside Vite via `concurrently`)
 - **Demo login:** `priya@deskhub.in` / `demo123` (other users in `db.json` still use password `password` unless you change them)

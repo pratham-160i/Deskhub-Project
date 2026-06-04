@@ -96,11 +96,19 @@ export async function ensureDb() {
     } catch {
       /* ignore */
     }
-    const url = apiUrl('/db.json')
-    const res = await fetch(url)
-    if (!res.ok) throw new Error(`Could not load db.json (${res.status})`)
-    mem = await res.json()
-    if (!mem.tickets || !mem.users) throw new Error('Invalid db.json')
+    const candidates = [apiUrl('/db.json'), new URL('db.json', window.location.href).href]
+    let lastStatus = ''
+    for (const url of candidates) {
+      const res = await fetch(url, { cache: 'no-store' })
+      if (res.ok) {
+        mem = await res.json()
+        break
+      }
+      lastStatus = `${url.split('/').pop()} → ${res.status}`
+    }
+    if (!mem?.tickets || !mem?.users) {
+      throw new Error(`Could not load db.json (${lastStatus || 'unknown'})`)
+    }
     if (!mem.comments) mem.comments = []
     persist()
     return mem

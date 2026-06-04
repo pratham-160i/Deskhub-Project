@@ -1,0 +1,49 @@
+{
+  "users": [
+    {"id": 1, "name": "Priya", "email": "priya@deskhub.in", "password": "demo123"},
+    {"id": 2, "name": "Bob Singh", "email": "bob@example.com", "password": "password"},
+    {"id": 3, "name": "Carol Diaz", "email": "carol@example.com", "password": "password"},
+    {"id": 4, "name": "Dan Okafor", "email": "dan@example.com", "password": "password"},
+    {"id": 5, "name": "Eve Park", "email": "eve@example.com", "password": "password"},
+    {"id": 6, "name": "Frank Li", "email": "frank@example.com", "password": "password"},
+    {"id": 7, "name": "Grace Nkosi", "email": "grace@example.com", "password": "password"},
+    {"id": 8, "name": "Henry Wu", "email": "henry@example.com", "password": "password"}
+  ],
+  "tickets": [
+    {"id": 1, "title": "SSO login timeout", "customer": "Acme", "priority": "urgent", "status": "open", "assignedTo": 1, "description": "Users see timeout after 30s", "createdAt": "2026-05-02T10:15:00.000Z"},
+    {"id": 2, "title": "Billing export fails", "customer": "Globex", "priority": "high", "status": "in-progress", "assignedTo": 2, "description": "Export returns 500", "createdAt": "2026-05-03T11:20:00.000Z"},
+    {"id": 3, "title": "API rate limit 429", "customer": "Umbrella", "priority": "medium", "status": "open", "assignedTo": 3, "description": "Spike during peak", "createdAt": "2026-05-04T09:05:00.000Z"},
+    {"id": 4, "title": "Mobile crash on startup", "customer": "Initech", "priority": "high", "status": "open", "assignedTo": 4, "description": "iOS 18 only", "createdAt": "2026-05-05T14:40:00.000Z"},
+    {"id": 5, "title": "Search returns empty", "customer": "Stark", "priority": "low", "status": "resolved", "assignedTo": 5, "description": "Index lag", "createdAt": "2026-05-06T08:30:00.000Z"},
+    {"id": 6, "title": "Webhook retries", "customer": "Wayne", "priority": "medium", "status": "in-progress", "assignedTo": 6, "description": "Duplicate deliveries", "createdAt": "2026-05-07T16:10:00.000Z"},
+    {"id": 7, "title": "CSV import mapping", "customer": "Hooli", "priority": "low", "status": "closed", "assignedTo": 7, "description": "Column mismatch", "createdAt": "2026-05-08T12:00:00.000Z"},
+    {"id": 8, "title": "Printer driver issue", "customer": "Vehement", "priority": "low", "status": "open", "assignedTo": 8, "description": "Windows 11", "createdAt": "2026-05-09T07:45:00.000Z"},
+    {"id": 9, "title": "Dashboard slow load", "customer": "Acme", "priority": "medium", "status": "open", "assignedTo": 1, "description": "3s TTFB", "createdAt": "2026-05-10T13:25:00.000Z"},
+    {"id": 10, "title": "Email digest wrong TZ", "customer": "Globex", "priority": "medium", "status": "resolved", "assignedTo": 2, "description": "UTC vs local", "createdAt": "2026-05-11T10:50:00.000Z"},
+    {"id": 11, "title": "2FA backup codes", "customer": "Umbrella", "priority": "high", "status": "in-progress", "assignedTo": 3, "description": "Regenerate flow", "createdAt": "2026-05-12T15:05:00.000Z"},
+    {"id": 12, "title": "Password reset loop", "customer": "Initech", "priority": "urgent", "status": "open", "assignedTo": 4, "description": "Token invalid", "createdAt": "2026-05-13T09:15:00.000Z"},
+    {"id": 13, "title": "OAuth callback error", "customer": "Stark", "priority": "high", "status": "closed", "assignedTo": 5, "description": "Redirect mismatch", "createdAt": "2026-05-14T11:00:00.000Z"},
+    {"id": 14, "title": "Session cookie secure flag", "customer": "Wayne", "priority": "low", "status": "resolved", "assignedTo": 6, "description": "Pen test finding", "createdAt": "2026-05-15T08:20:00.000Z"},
+    {"id": 15, "title": "LDAP sync delay", "customer": "Hooli", "priority": "medium", "status": "open", "assignedTo": 7, "description": "15 min lag", "createdAt": "2026-05-16T14:35:00.000Z"},
+    {"id": 16, "title": "Report PDF blank", "customer": "Vehement", "priority": "high", "status": "in-progress", "assignedTo": 8, "description": "Large datasets", "createdAt": "2026-05-17T12:10:00.000Z"},
+    {"id": 17, "title": "Chat notifications mute", "customer": "Acme", "priority": "low", "status": "open", "assignedTo": 1, "description": "Android", "createdAt": "2026-05-18T16:45:00.000Z"},
+    {"id": 18, "title": "Video call echo", "customer": "Globex", "priority": "medium", "status": "resolved", "assignedTo": 2, "description": "Headset combo", "createdAt": "2026-05-19T09:30:00.000Z"},
+    {"id": 19, "title": "Calendar invite parse", "customer": "Umbrella", "priority": "low", "status": "closed", "assignedTo": 3, "description": "Outlook format", "createdAt": "2026-05-20T10:00:00.000Z"},
+    {"id": 20, "title": "Task assignee notify", "customer": "Initech", "priority": "medium", "status": "open", "assignedTo": 4, "description": "Email not sent", "createdAt": "2026-05-21T13:15:00.000Z"},
+    {"id": 21, "title": "Bulk user import", "customer": "Stark", "priority": "high", "status": "in-progress", "assignedTo": 5, "description": "10k rows", "createdAt": "2026-05-22T07:55:00.000Z"},
+    {"id": 22, "title": "Audit log retention", "customer": "Wayne", "priority": "low", "status": "open", "assignedTo": 6, "description": "Policy 90d", "createdAt": "2026-05-23T15:40:00.000Z"},
+    {"id": 23, "title": "Role permission cache", "customer": "Hooli", "priority": "urgent", "status": "open", "assignedTo": 7, "description": "Stale after edit", "createdAt": "2026-05-24T11:25:00.000Z"},
+    {"id": 24, "title": "Theme contrast WCAG", "customer": "Vehement", "priority": "medium", "status": "resolved", "assignedTo": 8, "description": "AA compliance", "createdAt": "2026-05-25T08:10:00.000Z"},
+    {"id": 25, "title": "Export to Excel limits", "customer": "Acme", "priority": "low", "status": "closed", "assignedTo": 1, "description": "65k rows", "createdAt": "2026-05-26T14:50:00.000Z"},
+    {"id": 26, "title": "Notification batching", "customer": "Globex", "priority": "medium", "status": "in-progress", "assignedTo": 2, "description": "Digest option", "createdAt": "2026-05-27T09:40:00.000Z"},
+    {"id": 27, "title": "Login history page", "customer": "Umbrella", "priority": "high", "status": "open", "assignedTo": 3, "description": "Pagination bug", "createdAt": "2026-05-28T12:30:00.000Z"},
+    {"id": 28, "title": "MFA enrollment stuck", "customer": "Initech", "priority": "urgent", "status": "open", "assignedTo": 4, "description": "Spinner never ends", "createdAt": "2026-05-29T10:05:00.000Z"},
+    {"id": 29, "title": "Integration health check", "customer": "Stark", "priority": "low", "status": "resolved", "assignedTo": 5, "description": "False red", "createdAt": "2026-05-30T16:20:00.000Z"},
+    {"id": 30, "title": "Webhook signature verify", "customer": "Wayne", "priority": "high", "status": "closed", "assignedTo": 6, "description": "Clock skew", "createdAt": "2026-05-31T08:00:00.000Z"}
+  ],
+  "comments": [
+    {"id": 1, "ticketId": 1, "body": "Reproduced on staging.", "authorId": 2, "createdAt": "2026-05-02T09:00:00.000Z"},
+    {"id": 2, "ticketId": 1, "body": "Checking auth logs now.", "authorId": 1, "createdAt": "2026-05-02T11:30:00.000Z"},
+    {"id": 3, "ticketId": 3, "body": "Confirmed spike 9–10 UTC.", "authorId": 3, "createdAt": "2026-05-05T14:00:00.000Z"}
+  ]
+}

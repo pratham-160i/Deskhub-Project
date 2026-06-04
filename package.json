@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "sync-db": "node scripts/sync-db.mjs",
+    "prebuild": "npm run sync-db",
     "dev": "concurrently -k \"node server.mjs\" \"vite\"",
     "api": "node server.mjs",
     "build": "vite build",
