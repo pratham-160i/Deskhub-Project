@@ -1,3 +1,5 @@
+import { apiUrl } from './baseUrl.js'
+
 const TOKEN_KEY = 'deskhub_token'
 
 export function getToken() {
@@ -39,7 +41,7 @@ export function logout() {
 }
 
 export async function login(email, password) {
-  const res = await fetch('/login', {
+  const res = await fetch(apiUrl('/login'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password })

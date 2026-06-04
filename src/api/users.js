@@ -1,3 +1,5 @@
+import { apiUrl } from './baseUrl.js'
+
 let cachedUsers = null
 let inflight = null
 
@@ -13,7 +15,7 @@ export function getCachedUsers() {
 export async function fetchUsersOnce() {
   if (cachedUsers) return cachedUsers
   if (inflight) return inflight
-  inflight = fetch('/users')
+  inflight = fetch(apiUrl('/users'))
     .then((r) => {
       if (!r.ok) throw new Error('Failed to load users')
       return r.json()

@@ -1,3 +1,5 @@
+import { apiUrl } from './baseUrl.js'
+
 function authHeaders() {
   const token = localStorage.getItem('deskhub_token')
   const h = { 'Content-Type': 'application/json' }
@@ -35,7 +37,8 @@ export function buildQueryString(state) {
 }
 
 export async function listTickets(queryString = '') {
-  const url = `/tickets${queryString.startsWith('?') ? queryString : queryString ? `?${queryString}` : ''}`
+  const qs = queryString.startsWith('?') ? queryString : queryString ? `?${queryString}` : ''
+  const url = apiUrl(`/tickets${qs}`)
   const res = await fetch(url, { headers: authHeaders() })
   const totalHeader = res.headers.get('X-Total-Count')
   const total = totalHeader != null ? parseInt(totalHeader, 10) : NaN
@@ -49,14 +52,14 @@ export async function listTickets(queryString = '') {
 }
 
 export async function getTicket(id) {
-  const res = await fetch(`/tickets/${encodeURIComponent(id)}`, { headers: authHeaders() })
+  const res = await fetch(apiUrl(`/tickets/${encodeURIComponent(id)}`), { headers: authHeaders() })
   const data = await res.json().catch(() => ({}))
   if (!res.ok) throw new Error(data.message || 'Not found')
   return data
 }
 
 export async function createTicket(body) {
-  const res = await fetch('/tickets', {
+  const res = await fetch(apiUrl('/tickets'), {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify(body)
@@ -67,7 +70,7 @@ export async function createTicket(body) {
 }
 
 export async function updateTicket(id, patch) {
-  const res = await fetch(`/tickets/${encodeURIComponent(id)}`, {
+  const res = await fetch(apiUrl(`/tickets/${encodeURIComponent(id)}`), {
     method: 'PATCH',
     headers: authHeaders(),
     body: JSON.stringify(patch)
@@ -78,7 +81,7 @@ export async function updateTicket(id, patch) {
 }
 
 export async function deleteTicket(id) {
-  const res = await fetch(`/tickets/${encodeURIComponent(id)}`, {
+  const res = await fetch(apiUrl(`/tickets/${encodeURIComponent(id)}`), {
     method: 'DELETE',
     headers: authHeaders()
   })
@@ -90,14 +93,14 @@ export async function deleteTicket(id) {
 
 export async function listComments(ticketId) {
   const qs = new URLSearchParams({ ticketId: String(ticketId) }).toString()
-  const res = await fetch(`/comments?${qs}`, { headers: authHeaders() })
+  const res = await fetch(apiUrl(`/comments?${qs}`), { headers: authHeaders() })
   const data = await res.json().catch(() => [])
   if (!res.ok) throw new Error('Failed to load comments')
   return Array.isArray(data) ? data : []
 }
 
 export async function addComment({ ticketId, body, authorId }) {
-  const res = await fetch('/comments', {
+  const res = await fetch(apiUrl('/comments'), {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify({ ticketId, body, authorId })
@@ -112,7 +115,7 @@ export async function fetchTicketCount(filterQuery) {
   const params = new URLSearchParams(qs)
   params.set('_page', '1')
   params.set('_limit', '1')
-  const res = await fetch(`/tickets?${params.toString()}`, { headers: authHeaders() })
+  const res = await fetch(apiUrl(`/tickets?${params.toString()}`), { headers: authHeaders() })
   const totalHeader = res.headers.get('X-Total-Count')
   await res.json().catch(() => [])
   const total = totalHeader != null ? parseInt(totalHeader, 10) : 0

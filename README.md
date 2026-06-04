@@ -11,6 +11,12 @@ npm run dev
 
 Then open **http://localhost:5173/public/login.html** (or **http://localhost:5173/** which redirects there).
 
+### GitHub Pages (`*.github.io/RepoName/…`)
+
+Static assets use **relative URLs** (`styles/app.css`, `../src/main.js`) and API calls use a **`/RepoName` prefix** when the app is under `/RepoName/public/…`, so CSS and scripts load correctly on [GitHub Pages](https://pages.github.com/).
+
+**Important:** GitHub Pages only hosts **static files**. The Express API in `server.mjs` does **not** run there, so **login and data will not work** on the live Pages URL until you host the API elsewhere (Railway, Render, Fly.io, etc.) and point `apiUrl` / fetches at that host—or use a GitHub Action to deploy a built bundle plus backend.
+
 - **API:** http://localhost:3001 (started alongside Vite via `concurrently`)
 - **Demo login:** `priya@deskhub.in` / `demo123` (other users in `db.json` still use password `password` unless you change them)
 
