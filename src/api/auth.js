@@ -1,4 +1,6 @@
 import { apiUrl } from './baseUrl.js'
+import { useStaticDataMode } from './staticMode.js'
+import * as clientDb from './clientDb.js'
 
 const TOKEN_KEY = 'deskhub_token'
 
@@ -41,6 +43,12 @@ export function logout() {
 }
 
 export async function login(email, password) {
+  if (useStaticDataMode()) {
+    const data = await clientDb.login(email, password)
+    if (data.accessToken) setToken(data.accessToken)
+    if (data.user) setCurrentUser(data.user)
+    return data
+  }
   const res = await fetch(apiUrl('/login'), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
