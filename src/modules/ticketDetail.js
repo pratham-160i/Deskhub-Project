@@ -7,8 +7,24 @@ import {
   listComments,
   addComment
 } from '../api/tickets.js'
-import { formatDate, formatDateTime } from '../utils/formatDate.js'
+import { formatDateTime } from '../utils/formatDate.js'
 import { toast, confirmDialog, showFullscreenLoader, hideFullscreenLoader } from './ui.js'
+
+const PLACEHOLDER_ATTR = 'data-deskhub-placeholder'
+
+function addPlaceholderSelect(select, label) {
+  if (select.querySelector(`option[${PLACEHOLDER_ATTR}]`)) return
+  const opt = document.createElement('option')
+  opt.value = ''
+  opt.textContent = label
+  opt.setAttribute(PLACEHOLDER_ATTR, '1')
+  opt.hidden = false
+  select.insertBefore(opt, select.firstChild)
+}
+
+function removePlaceholderSelect(select) {
+  select.querySelectorAll(`option[${PLACEHOLDER_ATTR}]`).forEach((n) => n.remove())
+}
 
 export function initTicketDetail() {
   if (!requireAuth()) return
@@ -29,6 +45,9 @@ export function initTicketDetail() {
     status: document.getElementById('field-status'),
     priority: document.getElementById('field-priority'),
     assignee: document.getElementById('field-assignee'),
+    editBtn: document.getElementById('btn-edit-ticket'),
+    saveBtn: document.getElementById('btn-save-ticket'),
+    cancelBtn: document.getElementById('btn-cancel-edit'),
     deleteBtn: document.getElementById('btn-delete-ticket'),
     back: document.getElementById('btn-back'),
     commentsList: document.getElementById('comments-list'),
@@ -41,6 +60,38 @@ export function initTicketDetail() {
   let users = []
   let ticket = null
 
+  function setViewMode() {
+    els.status.disabled = true
+    els.priority.disabled = true
+    els.assignee.disabled = true
+    els.editBtn.hidden = false
+    els.saveBtn.hidden = true
+    els.cancelBtn.hidden = true
+    removePlaceholderSelect(els.status)
+    removePlaceholderSelect(els.priority)
+  }
+
+  function setEditMode() {
+    addPlaceholderSelect(els.status, 'Select status')
+    addPlaceholderSelect(els.priority, 'Select priority')
+    els.assignee.innerHTML = '<option value="">Select assignee</option>'
+    for (const u of users) {
+      const o = document.createElement('option')
+      o.value = String(u.id)
+      o.textContent = u.name
+      els.assignee.appendChild(o)
+    }
+    els.status.value = ''
+    els.priority.value = ''
+    els.assignee.value = ''
+    els.status.disabled = false
+    els.priority.disabled = false
+    els.assignee.disabled = false
+    els.editBtn.hidden = true
+    els.saveBtn.hidden = false
+    els.cancelBtn.hidden = false
+  }
+
   async function load() {
     showFullscreenLoader('Loading ticket…')
     try {
@@ -51,9 +102,9 @@ export function initTicketDetail() {
       ])
       users = u
       ticket = t
-      renderTicket()
       fillAssigneeSelect()
-      wirePatchHandlers()
+      renderTicket()
+      setViewMode()
       renderComments(comments)
     } catch (e) {
       toast(e.message || 'Failed to load', 'error')
@@ -85,42 +136,50 @@ export function initTicketDetail() {
     if (ticket?.assignedTo != null) els.assignee.value = String(ticket.assignedTo)
   }
 
-  function wirePatchHandlers() {
-    els.status.onchange = async () => {
-      try {
-        await updateTicket(id, { status: els.status.value })
-        toast('Status updated', 'success')
-        ticket = await getTicket(id)
-        renderTicket()
-      } catch (e) {
-        toast(e.message || 'Update failed', 'error')
-        els.status.value = ticket.status
-      }
+  els.editBtn.addEventListener('click', () => {
+    setEditMode()
+  })
+
+  els.cancelBtn.addEventListener('click', () => {
+    setViewMode()
+    fillAssigneeSelect()
+    renderTicket()
+  })
+
+  els.saveBtn.addEventListener('click', async () => {
+    const status = els.status.value
+    const priority = els.priority.value
+    const assignRaw = els.assignee.value
+    if (!status) {
+      toast('Please select a status', 'error')
+      return
     }
-    els.priority.onchange = async () => {
-      try {
-        await updateTicket(id, { priority: els.priority.value })
-        toast('Priority updated', 'success')
-        ticket = await getTicket(id)
-        renderTicket()
-      } catch (e) {
-        toast(e.message || 'Update failed', 'error')
-        els.priority.value = ticket.priority
-      }
+    if (!priority) {
+      toast('Please select a priority', 'error')
+      return
     }
-    els.assignee.onchange = async () => {
-      const v = els.assignee.value
-      try {
-        await updateTicket(id, { assignedTo: v === '' ? null : Number(v) })
-        toast('Assignee updated', 'success')
-        ticket = await getTicket(id)
-        renderTicket()
-      } catch (e) {
-        toast(e.message || 'Update failed', 'error')
-        els.assignee.value = ticket.assignedTo != null ? String(ticket.assignedTo) : ''
-      }
+    if (!assignRaw) {
+      toast('Please select an assignee', 'error')
+      return
     }
-  }
+    showFullscreenLoader('Saving…')
+    try {
+      await updateTicket(id, {
+        status,
+        priority,
+        assignedTo: Number(assignRaw)
+      })
+      ticket = await getTicket(id)
+      setViewMode()
+      fillAssigneeSelect()
+      renderTicket()
+      toast('Ticket updated', 'success')
+    } catch (e) {
+      toast(e.message || 'Update failed', 'error')
+    } finally {
+      hideFullscreenLoader()
+    }
+  })
 
   function renderComments(comments) {
     els.commentsList.replaceChildren()

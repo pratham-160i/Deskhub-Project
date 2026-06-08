@@ -381,6 +381,16 @@ textarea:focus-visible {
 .actions {
   margin-top: var(--space-3);
 }
+.actions--ticket {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+select:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+}
 
 .comments-list {
   list-style: none;
