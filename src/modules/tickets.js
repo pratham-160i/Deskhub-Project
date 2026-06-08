@@ -11,7 +11,7 @@ const defaultState = () => ({
   status: '',
   priority: '',
   assignedTo: '',
-  sort: 'oldest',
+  sort: '',
   page: 1,
   limit: 10
 })
@@ -23,7 +23,7 @@ function readStateFromUrl() {
   if (p.has('status')) s.status = p.get('status') || ''
   if (p.has('priority')) s.priority = p.get('priority') || ''
   if (p.has('assignedTo')) s.assignedTo = p.get('assignedTo') || ''
-  if (p.has('sort')) s.sort = p.get('sort') || 'oldest'
+  if (p.has('sort')) s.sort = p.get('sort') || ''
   if (p.has('page')) s.page = Math.max(1, parseInt(p.get('page'), 10) || 1)
   return s
 }
@@ -34,7 +34,7 @@ function writeStateToUrl(state) {
   if (state.status) p.set('status', state.status)
   if (state.priority) p.set('priority', state.priority)
   if (state.assignedTo) p.set('assignedTo', String(state.assignedTo))
-  if (state.sort && state.sort !== 'oldest') p.set('sort', state.sort)
+  if (state.sort) p.set('sort', state.sort)
   if (state.page > 1) p.set('page', String(state.page))
   const qs = p.toString()
   const url = `${window.location.pathname}${qs ? `?${qs}` : ''}`
@@ -83,6 +83,7 @@ export function initTicketsList() {
     pages: document.getElementById('page-numbers'),
     newBtn: document.getElementById('btn-new-ticket'),
     exportBtn: document.getElementById('btn-export-csv'),
+    resetBtn: document.getElementById('btn-filter-reset'),
     logout: document.getElementById('btn-logout')
   }
 
@@ -245,6 +246,12 @@ export function initTicketsList() {
       refresh()
     })
   }
+
+  els.resetBtn?.addEventListener('click', () => {
+    Object.assign(state, defaultState())
+    syncFiltersFromState()
+    refresh()
+  })
 
   els.prev.addEventListener('click', () => {
     if (state.page > 1) {

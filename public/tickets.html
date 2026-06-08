@@ -26,40 +26,46 @@
             <input id="filter-search" type="search" placeholder="Title, customer, description…" autocomplete="off" />
           </label>
         </div>
-        <div class="filters__row filters__row--wrap">
-          <label class="field">
-            <span>Status</span>
-            <select id="filter-status">
-              <option value="">All</option>
-              <option value="open">open</option>
-              <option value="in-progress">in-progress</option>
-              <option value="resolved">resolved</option>
-              <option value="closed">closed</option>
-            </select>
-          </label>
-          <label class="field">
-            <span>Priority</span>
-            <select id="filter-priority">
-              <option value="">All</option>
-              <option value="low">low</option>
-              <option value="medium">medium</option>
-              <option value="high">high</option>
-              <option value="urgent">urgent</option>
-            </select>
-          </label>
-          <label class="field">
-            <span>Assignee</span>
-            <select id="filter-assignee"><option value="">All assignees</option></select>
-          </label>
-          <label class="field">
-            <span>Sort</span>
-            <select id="filter-sort">
-              <option value="oldest">Oldest first</option>
-              <option value="newest">Newest first</option>
-              <option value="priority">Priority</option>
-              <option value="status">Status</option>
-            </select>
-          </label>
+        <div class="filters__row filters__row--filters-bar">
+          <div class="filters__row filters__row--wrap filters__row--grow">
+            <label class="field">
+              <span>Status</span>
+              <select id="filter-status">
+                <option value="">All</option>
+                <option value="open">open</option>
+                <option value="in-progress">in-progress</option>
+                <option value="resolved">resolved</option>
+                <option value="closed">closed</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Priority</span>
+              <select id="filter-priority">
+                <option value="">All</option>
+                <option value="low">low</option>
+                <option value="medium">medium</option>
+                <option value="high">high</option>
+                <option value="urgent">urgent</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Assignee</span>
+              <select id="filter-assignee"><option value="">All assignees</option></select>
+            </label>
+            <label class="field">
+              <span>Sort</span>
+              <select id="filter-sort">
+                <option value="">—</option>
+                <option value="oldest">Oldest first</option>
+                <option value="newest">Newest first</option>
+                <option value="priority">Priority</option>
+                <option value="status">Status</option>
+              </select>
+            </label>
+          </div>
+          <button type="button" class="btn btn--ghost filters__reset" id="btn-filter-reset">
+            Reset
+          </button>
         </div>
         <div class="filters__actions">
           <button type="button" class="btn btn--primary" id="btn-new-ticket">New ticket</button>

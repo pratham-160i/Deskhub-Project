@@ -219,6 +219,23 @@ textarea:focus-visible {
 .filters__row--wrap {
   flex-wrap: wrap;
 }
+.filters__row--filters-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.filters__row--grow {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-bottom: 0;
+}
+.filters__reset {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  margin-top: 0.125rem;
+}
 .filters__actions {
   display: flex;
   gap: var(--space-3);
