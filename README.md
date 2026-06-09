@@ -11,6 +11,22 @@ npm run dev
 
 Then open **http://localhost:5173/public/login.html** (or **http://localhost:5173/** which redirects there).
 
+### Automated tests (Vitest)
+
+After `npm install`, run the unit suite (UI helpers, loader, modal/confirm, keyboard shortcuts):
+
+```bash
+npm test
+```
+
+For a coverage report on `ui.js`, `keyboardContext.js`, and `keyboardShortcuts.js`:
+
+```bash
+npm run test:coverage
+```
+
+**Walkthrough:** run `npm test` once before a demo or hand-in so you know overlays, toasts, and shortcuts still behave as expected.
+
 ### GitHub Pages (`*.github.io/RepoName/…`)
 
 The live site uses **relative asset URLs**, **`siteBase()`** so `/RepoName` is prefixed correctly even when the path does not contain `/public/`, and **`.nojekyll`** so GitHub does not run Jekyll on your files.
@@ -33,7 +49,7 @@ After changing **`db.json`**, run **`npm run sync-db`** (or `npm run build`) so 
 | **Tickets list** | Search (debounced), status / priority / assignee / sort filters, pagination (10/page), URL sync (`replaceState`) + `popstate`, CSV export |
 | **Detail** | Parallel `Promise.all` load for ticket, comments, users; PATCH status/priority/assignee; delete with confirm; comments thread + POST |
 | **Dashboard** | Four stat cards using `X-Total-Count` from parallel filtered `GET /tickets` calls; recent 5 tickets |
-| **UI** | Toasts, modal (Esc + overlay + initial focus), fullscreen loader, confirm dialog |
+| **UI** | Stacked toasts (cap + exit animation), modal (backdrop + panel motion, Esc + overlay), fullscreen loader (min visible time for fast/slow ops), confirm dialog |
 | **Forms** | Shared validators; create-ticket modal with blur + submit validation (`textContent` for user text) |
 
 ## Architecture
@@ -63,7 +79,6 @@ Add 2–3 screenshots here after you run the app (login, tickets table, dashboar
 
 - Tokens are **not** verified on the server (client-side “auth” only, suitable for the course lab).
 - Search is simple substring match on title, customer, and description.
-- No automated tests in-repo (smoke-test manually).
 
 ## What I’d add next
 
@@ -80,3 +95,4 @@ The hardest part was matching **filtered** list behaviour with **`X-Total-Count`
 - **URL state** for filters + page (with `popstate`).
 - **CSV export** of the current filtered list.
 - **Dark / light theme** toggle (header or login toolbar), persisted in `localStorage` (`deskhub_theme`), with system preference as the default when unset.
+- **Keyboard shortcuts** (see `src/modules/keyboardShortcuts.js` and row navigation in `src/modules/tickets.js`): **Dashboard** — `/` opens Tickets with the search box focused, `t` opens Tickets, `?` shows tips; **Tickets** — `/` focuses search, `j` / `k` or arrow keys move the highlighted row, `Enter` / `o` / `h` opens that row, `n` new ticket, `?` tips; **any page** — `m` toggles light/dark theme; **anywhere (except login)** — `g` then `d` / `g` then `t` for Dashboard / Tickets; **ticket detail** — `e` opens Edit when visible (shortcuts are ignored while typing in inputs).

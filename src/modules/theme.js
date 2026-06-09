@@ -23,20 +23,23 @@ function syncToggleButtons() {
   })
 }
 
+/** Flip light/dark and persist (same as the header theme button). */
+export function toggleTheme() {
+  const root = document.documentElement
+  if (root.dataset.theme === 'dark') {
+    delete root.dataset.theme
+    localStorage.setItem(STORAGE_KEY, 'light')
+  } else {
+    root.dataset.theme = 'dark'
+    localStorage.setItem(STORAGE_KEY, 'dark')
+  }
+  syncToggleButtons()
+}
+
 export function initTheme() {
   applyFromStorage()
   syncToggleButtons()
   document.querySelectorAll('[data-theme-toggle]').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      const root = document.documentElement
-      if (root.dataset.theme === 'dark') {
-        delete root.dataset.theme
-        localStorage.setItem(STORAGE_KEY, 'light')
-      } else {
-        root.dataset.theme = 'dark'
-        localStorage.setItem(STORAGE_KEY, 'dark')
-      }
-      syncToggleButtons()
-    })
+    btn.addEventListener('click', toggleTheme)
   })
 }

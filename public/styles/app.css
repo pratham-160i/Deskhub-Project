@@ -296,6 +296,10 @@ textarea:focus-visible {
 .tickets-row {
   cursor: pointer;
 }
+.tickets-row.tickets-row--selected {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
 
 .pagination {
   margin-top: var(--space-4);
@@ -453,6 +457,13 @@ select:disabled {
   border-radius: var(--radius);
   border: 1px solid var(--border);
   box-shadow: 0 20px 50px rgb(0 0 0 / 0.2);
+  transform: scale(0.97);
+  opacity: 0;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.modal-backdrop--open .modal {
+  transform: scale(1);
+  opacity: 1;
 }
 .modal__header {
   display: flex;
@@ -505,6 +516,13 @@ select:disabled {
   border: 1px solid var(--border);
   box-shadow: 0 8px 24px rgb(0 0 0 / 0.12);
   font-size: 0.95rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+.toast--in {
+  opacity: 1;
+  transform: translateY(0);
 }
 .toast--success {
   border-color: #15803d;
@@ -524,7 +542,8 @@ html[data-theme='dark'] .toast--success {
   position: fixed;
   inset: 0;
   z-index: 2000;
-  background: rgb(15 23 42 / 0.35);
+  background: rgb(15 23 42 / 0.38);
+  backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
   justify-content: center;

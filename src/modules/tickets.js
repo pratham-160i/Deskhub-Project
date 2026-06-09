@@ -3,6 +3,7 @@ import { fetchUsersOnce, userNameById, clearUsersCache } from '../api/users.js'
 import { buildQueryString, listTickets, createTicket } from '../api/tickets.js'
 import { formatDate } from '../utils/formatDate.js'
 import { debounce } from '../utils/debounce.js'
+import { isTypingContext } from '../utils/keyboardContext.js'
 import { openModal, closeModal, toast, showFullscreenLoader, hideFullscreenLoader } from './ui.js'
 import { validateField, validateForm, required, minLength, maxLength, oneOf } from './form.js'
 
@@ -90,15 +91,88 @@ export function initTicketsList() {
   let users = []
   let lastTotal = 0
   const state = readStateFromUrl()
+  /** @type {number} index into current tbody rows, or -1 if none */
+  let selectedRowIndex = -1
 
   els.pagination.hidden = true
 
+  function listTicketRows() {
+    return els.tbody ? [...els.tbody.querySelectorAll('tr.tickets-row')] : []
+  }
+
+  function syncRowHighlight() {
+    const rows = listTicketRows()
+    for (let i = 0; i < rows.length; i++) {
+      const on = i === selectedRowIndex
+      rows[i].classList.toggle('tickets-row--selected', on)
+      rows[i].toggleAttribute('aria-selected', on)
+    }
+    if (selectedRowIndex >= 0 && rows[selectedRowIndex]) {
+      rows[selectedRowIndex].scrollIntoView({ block: 'nearest' })
+    }
+  }
+
+  function isModalOpen() {
+    return Boolean(document.querySelector('.modal-backdrop--open'))
+  }
+
+  function onTicketsListNavKeydown(ev) {
+    if (ev.defaultPrevented) return
+    if (ev.ctrlKey || ev.metaKey || ev.altKey) return
+    if (isTypingContext(ev.target)) return
+    if (isModalOpen()) return
+    if (els.tableWrap.hidden) return
+
+    const rows = listTicketRows()
+    if (!rows.length) return
+
+    const key = ev.key
+    const down = key === 'j' || key === 'J' || key === 'ArrowDown'
+    const up = key === 'k' || key === 'K' || key === 'ArrowUp'
+    const openKey = key === 'Enter' || key === 'o' || key === 'O' || key === 'h' || key === 'H'
+
+    if (down) {
+      ev.preventDefault()
+      if (selectedRowIndex < 0) selectedRowIndex = 0
+      else selectedRowIndex = Math.min(selectedRowIndex + 1, rows.length - 1)
+      syncRowHighlight()
+      return
+    }
+    if (up) {
+      ev.preventDefault()
+      if (selectedRowIndex < 0) selectedRowIndex = rows.length - 1
+      else selectedRowIndex = Math.max(selectedRowIndex - 1, 0)
+      syncRowHighlight()
+      return
+    }
+    if (openKey) {
+      if (selectedRowIndex < 0 || selectedRowIndex >= rows.length) return
+      const guardOutsideTable =
+        key === 'Enter' || key === 'h' || key === 'H'
+      if (guardOutsideTable && ev.target instanceof Element) {
+        const block = ev.target.closest('button, a[href], select, textarea, input')
+        if (block && !block.closest('#tickets-table-wrap')) return
+      }
+      ev.preventDefault()
+      const id = rows[selectedRowIndex].dataset.id
+      if (id) window.location.href = `ticket-detail.html?id=${encodeURIComponent(id)}`
+    }
+  }
+
+  document.addEventListener('keydown', onTicketsListNavKeydown)
+
   async function boot() {
     try {
+      const focusFromDash = window.location.hash === '#search'
       users = await fetchUsersOnce()
       fillAssigneeDropdown()
       syncFiltersFromState()
       await refresh()
+      if (focusFromDash) {
+        const base = `${window.location.pathname}${window.location.search || ''}`
+        window.history.replaceState(window.history.state ?? null, '', base)
+        requestAnimationFrame(() => els.search?.focus())
+      }
     } catch (e) {
       showError(e.message || 'Could not load users')
     }
@@ -203,6 +277,7 @@ export function initTicketsList() {
       })
       return tr
     })
+    selectedRowIndex = -1
     els.tbody.replaceChildren(...rows)
   }
 
